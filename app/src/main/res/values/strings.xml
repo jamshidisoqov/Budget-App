@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Budget App</string>
+
+    <string name="onBoardingTitle1">Easy to add new transaction</string>
+    <string name="onBoardingTitle2">Track income and expenses</string>
+    <string name="onBoardingTitle3">Comprehensive Report</string>
+
+    <string name="onBoardingDesc1">We always try to bring the best experience to users. Your transactions are recorded as quickly as possible. You will not have any difficulties when you first use MoNo.</string>
+    <string name="onBoardingDesc2">Details tracking transactions visually with the adding images features bills</string>
+    <string name="onBoardingDesc3">Supports viewing your balance for monthly, income and expenses, debts, loans as well as reports with category.</string>
 </resources>
