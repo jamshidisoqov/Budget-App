@@ -10,9 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import uz.gita.budget_app.data.prefs.MySharedPref
 import uz.gita.budget_app.ui.theme.BudgetAppTheme
+import javax.inject.Inject
 
-class MainActivity : ComponentActivity() {
+class MainActivity @Inject constructor(
+    private val mySharedPref: MySharedPref
+) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
