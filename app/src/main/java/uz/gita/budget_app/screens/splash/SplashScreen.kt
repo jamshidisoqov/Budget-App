@@ -1,4 +1,4 @@
-package uz.gita.budget_app.screens
+package uz.gita.budget_app.screens.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
