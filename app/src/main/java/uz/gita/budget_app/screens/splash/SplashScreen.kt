@@ -44,6 +44,6 @@ fun Splash() {
 @Composable
 fun SplashPreview() {
     BudgetAppTheme {
-
+        Splash()
     }
 }

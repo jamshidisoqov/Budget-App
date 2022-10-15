@@ -8,7 +8,6 @@ import uz.gita.budget_app.data.room.entity.IncomeEntity
 
 @Dao
 // Created by Jamshid Isoqov an 10/14/2022
-@Dao
 interface IncomeDao : BaseDao<IncomeEntity> {
 
     @Query("select * from incomes where date between :start and :end ")

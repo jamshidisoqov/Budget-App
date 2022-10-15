@@ -88,8 +88,10 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-
+    //lottie
     implementation 'com.airbnb.android:lottie-compose:5.2.0'
-
-    implementation 'com.google.accompanist:accompanist-pager:0.24.13-rc'
+    //pager
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
 }

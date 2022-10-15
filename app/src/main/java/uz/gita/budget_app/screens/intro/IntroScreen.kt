@@ -1,23 +1,14 @@
 package uz.gita.budget_app.screens.intro
 
-import android.widget.Button
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,183 +17,143 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import uz.gita.budget_app.ui.theme.BudgetAppTheme
+import uz.gita.budget_app.R
+import uz.gita.budget_app.screens.main.MainScreen
+import uz.gita.budget_app.utils.ButtonView
 
-// Created by Jamshid Isoqov an 10/14/2022
+
 class IntroScreen : AndroidScreen() {
-    @OptIn(ExperimentalPagerApi::class)
     @Composable
     override fun Content() {
-        OnBoarding()
+        TabLayout()
     }
 }
 
-@ExperimentalPagerApi
+@Preview(showSystemUi = true, showBackground = true)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnBoarding() {
-    val items = OnBoardingItems.getData()
-    val scope = rememberCoroutineScope()
-    val pageState = rememberPagerState()
+fun TabLayout() {
+    val coroutineScope = rememberCoroutineScope()
+    val systemUiController: SystemUiController = rememberSystemUiController()
+    systemUiController.isSystemBarsVisible = false//removes system bar
+    val items: ArrayList<IntroData> = arrayListOf(
+        IntroData(R.drawable.illustration1, R.string.onBoardingTitle1, R.string.onBoardingDesc1),
+        IntroData(R.drawable.illustration2, R.string.onBoardingTitle2, R.string.onBoardingDesc2),
+        IntroData(R.drawable.illustration3, R.string.onBoardingTitle3, R.string.onBoardingDesc3)
+    )
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        HorizontalPager(
-            count = items.size,
-            state = pageState,
+    val pagerState =
+        rememberPagerState(pageCount = items.size, initialOffscreenLimit = 2, initialPage = 0)
+
+
+    OnBoardingPager(
+        items = items,
+        pagerState = pagerState,
+        modifier = Modifier.fillMaxWidth(),
+        coroutineScope
+    )
+
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun OnBoardingPager(
+    items: List<IntroData>,
+    pagerState: PagerState,
+    modifier: Modifier,
+    coroutineScope: CoroutineScope,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 32.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxHeight(0.9f)
+                .padding(16.dp)
                 .fillMaxWidth()
-        ) { page ->
-            OnBoardingItem(items = items[page])
-        }
-        BottomSection(size = items.size, index = pageState.currentPage) {
-            if (pageState.currentPage + 1 < items.size) scope.launch {
-                pageState.scrollToPage(pageState.currentPage + 1)
+                .height(40.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val navigator = LocalNavigator.currentOrThrow
+
+            Text(text = "${pagerState.currentPage + 1}/${items.size}")
+            if (pagerState.currentPage + 1 < items.size) {
+                OutlinedButton(
+                    onClick = {
+                        navigator.push(MainScreen())
+                    },
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    Text(text = "Skip")
+                }
             }
         }
 
-
-    }
-
-}
-
-@Composable
-fun OnBoardingItem(items: OnBoardingItems) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize(
-        )
-    ) {
-        Image(
-            painter = painterResource(id = items.image),
-            contentDescription = "Image1",
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-
-        Text(
-            text = stringResource(id = items.title),
-            style = MaterialTheme.typography.headlineMedium,
-            fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            letterSpacing = 1.sp,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(id = items.desc),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Light,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(10.dp),
-            letterSpacing = 1.sp,
-        )
-
-
-    }
-}
-
-
-@Composable
-fun BottomSection(size: Int, index: Int, onButtonClick: () -> Unit = {}) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp)
-    ) {
-        // Indicators
-        Indicators(size, index)
-
-        Button(
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-            onClick = { /* do something */ },
+        Box(
             modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .clip(RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
+                .fillMaxWidth()
+                .requiredHeight(500.dp)
         ) {
-            Text(text = "Continue")
+            HorizontalPager(state = pagerState) { page ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    Image(
+                        painter = painterResource(id = items[page].image),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                    )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            text = stringResource(items[page].title),//to get string resource
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = stringResource(items[page].desc),//to get string resource
+                            textAlign = TextAlign.Center,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+
+                }
+            }
         }
-    }
-}
-
-@Composable
-fun BoxScope.Indicators(size: Int, index: Int) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.align(Alignment.CenterStart)
-    ) {
-        repeat(size) {
-            Indicator(isSelected = it == index)
-        }
-    }
-}
-
-@Composable
-fun Indicator(isSelected: Boolean) {
-    val width = animateDpAsState(
-        targetValue = if (isSelected) 25.dp else 10.dp,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
-    )
-
-    Box(
-        modifier = Modifier
-            .height(10.dp)
-            .width(width.value)
-            .clip(CircleShape)
-            .background(
-                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Blue
+        if (pagerState.currentPage + 1 < items.size) {
+            ButtonView(
+                text = "Continue",
+                onClick = { coroutineScope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) } },
             )
-    ) {
-
+        } else ButtonView(
+            text = "Get started ",
+            onClick = { coroutineScope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) } },
+        )
     }
 }
-
-
-@ExperimentalPagerApi
-@Preview(showBackground = true)
-@Composable
-fun IntroPreview() {
-    BudgetAppTheme {
-        OnBoarding()
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
