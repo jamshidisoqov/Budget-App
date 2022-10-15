@@ -80,7 +80,7 @@ fun CategoryItemPreview() {
                 CategoryModel("Gas", R.raw.gas),
                 CategoryModel("Fun", R.raw.`fun`),
             )
-            CategoryItems(categoryItems = gridItems)
+            CategoryItems(categoryItems = AllCategoriesList.list)
 
         }
 
