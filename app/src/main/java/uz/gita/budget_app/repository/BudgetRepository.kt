@@ -59,7 +59,7 @@ interface BudgetRepository {
     //expanses
     suspend fun insertExpansesEntity(expansesEntity: ExpansesEntity):Long
 
-    suspend fun updateExpansesEntity(expansesEntity: ExpansesEntity):Long
+    suspend fun updateExpansesEntity(expansesEntity: ExpansesEntity):Int
 
     suspend fun deleteExpansesEntity(expansesEntity: ExpansesEntity)
 
@@ -78,7 +78,7 @@ interface BudgetRepository {
     //income
     suspend fun insertIncomeEntity(entity: IncomeEntity):Long
 
-    suspend fun updateIncomeEntity(entity: IncomeEntity):Long
+    suspend fun updateIncomeEntity(entity: IncomeEntity):Int
 
     suspend fun deleteIncomeEntity(entity: IncomeEntity)
 
