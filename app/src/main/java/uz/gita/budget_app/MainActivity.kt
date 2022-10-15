@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import uz.gita.budget_app.data.prefs.MySharedPref
 import uz.gita.budget_app.ui.theme.BudgetAppTheme
+import uz.gita.budget_app.utils.CategoryItemView
 import javax.inject.Inject
 
 class MainActivity @Inject constructor(
@@ -42,6 +43,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     BudgetAppTheme {
-        Greeting("Android")
+
     }
 }
