@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import uz.gita.budget_app.data.room.entity.IncomeCategoryEntity
 import uz.gita.budget_app.data.room.entity.IncomeEntity
 
-@Dao
+
 // Created by Jamshid Isoqov an 10/14/2022
 interface IncomeDao : BaseDao<IncomeEntity> {
 
