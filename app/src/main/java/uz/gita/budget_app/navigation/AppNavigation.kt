@@ -15,4 +15,6 @@ interface AppNavigation {
 
     suspend fun navigateTo(screen: AndroidScreen)
 
+    suspend fun splashNavigateTo(screen: AndroidScreen)
+
 }

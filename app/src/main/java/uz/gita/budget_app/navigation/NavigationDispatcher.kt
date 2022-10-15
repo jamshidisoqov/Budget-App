@@ -31,4 +31,8 @@ class NavigationDispatcher @Inject constructor() : NavigationHandler, AppNavigat
         push(screen)
     }
 
+    override suspend fun splashNavigateTo(screen: AndroidScreen) = navigate {
+        replace(screen)
+    }
+
 }
