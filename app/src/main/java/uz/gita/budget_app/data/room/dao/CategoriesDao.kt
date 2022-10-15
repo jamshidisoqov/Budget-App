@@ -10,6 +10,6 @@ import uz.gita.budget_app.data.room.entity.CategoryEntity
 interface CategoriesDao : BaseDao<CategoryEntity> {
 
     @Query("select*from categories")
-    fun getAllCategories(): Flow<List<CategoryEntity>>
+    suspend fun getAllCategories(): List<CategoryEntity>
 
 }

@@ -21,4 +21,6 @@ class MySharedPref @Inject constructor(
 
     var currencyId: Int by Ints(defValue = 1)
 
+    var balance:Float by Doubles(defValue = 0.0f)
+
 }

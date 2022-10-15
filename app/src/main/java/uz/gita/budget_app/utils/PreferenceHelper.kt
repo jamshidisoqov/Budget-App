@@ -28,6 +28,15 @@ abstract class SharedPreference(context: Context, preferences: SharedPreferences
             pref.edit { putInt(property.name, value).apply() }
     }
 
+
+    inner class Doubles(private val defValue: Float = 0.0f) : ReadWriteProperty<Any, Float> {
+        override fun getValue(thisRef: Any, property: KProperty<*>) =
+            pref.getFloat(property.name, defValue)
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: Float) =
+            pref.edit { putFloat(property.name, value).apply() }
+    }
+
     inner class Longs(private val defValue: Long = 0L) : ReadWriteProperty<Any, Long> {
         override fun getValue(thisRef: Any, property: KProperty<*>) =
             pref.getLong(property.name, defValue)

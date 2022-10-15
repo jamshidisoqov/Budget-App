@@ -16,4 +16,6 @@ interface CurrenciesDao : BaseDao<CurrenciesEntity> {
     @Query("update currencies set dollarPrice=:currenciesDollarPrice where id=:currenciesId")
     suspend fun updateCurrencies(currenciesId: Int, currenciesDollarPrice: Double)
 
+    @Query("select*from currencies where id=:currenciesId limit 1")
+    suspend fun getCurrencyById(currenciesId: Int):CurrenciesEntity
 }

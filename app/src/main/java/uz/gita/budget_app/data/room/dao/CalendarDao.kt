@@ -9,10 +9,10 @@ import uz.gita.budget_app.data.room.entity.CalendarEntity
 interface CalendarDao : BaseDao<CalendarEntity> {
 
 
-    @Query("select*from calendar_data WHERE date=:date AND type='exp'")
-    suspend fun calendarOfExistsDateExpanses(date: String): CalendarEntity
+    @Query("select*from calendar_data WHERE date=:date AND type=='exp'")
+    suspend fun calendarOfExistsDateExpanses(date: String): CalendarEntity?
 
-    @Query("select*from calendar_data WHERE date=:date AND type='inc'")
-    suspend fun calendarOfExistsDateIncome(date: String): CalendarEntity
+    @Query("select*from calendar_data WHERE date=:date AND type=='inc'")
+    suspend fun calendarOfExistsDateIncome(date: String): CalendarEntity?
 
 }

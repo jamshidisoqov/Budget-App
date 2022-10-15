@@ -9,5 +9,5 @@ data class CalendarEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val date: String,
-    val type: Int
+    val type: String
 )
