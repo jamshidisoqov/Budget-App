@@ -89,16 +89,18 @@ fun ReportBar() {
 fun DataSelectBar() {
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(50))
+
             .padding(horizontal = 24.dp, vertical = 16.dp)
-            .background(color = BackgroundColor),
+            .clip(RoundedCornerShape(50))
+            .background(color = BackgroundColor)
+            .padding(2.dp),
+
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
             onClick = { /*TODO*/ }, modifier = Modifier
                 .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(50))
-                .background(color = BackgroundColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.navigate_before_24),
@@ -111,7 +113,6 @@ fun DataSelectBar() {
         IconButton(
             onClick = { /*TODO*/ }, modifier = Modifier
                 .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(50))
-                .background(color = BackgroundColor)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.navigate_next_24),
