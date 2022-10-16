@@ -244,20 +244,20 @@ fun MonthlyReportView(
         CalendarData(4214123123, false, false),
         ExpansesData(
             ExpansesEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            ExpansesCategoryEntity(1, "Name", "sdasdasd")
+            ExpansesCategoryEntity(1, "Name", 1)
             ),
         IncomeData(
             IncomeEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            IncomeCategoryEntity(1, "Name", "sdasdasd")
+            IncomeCategoryEntity(1, "Name", 1)
         ),
         CalendarData(4214123123, false, false),
         ExpansesData(
             ExpansesEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            ExpansesCategoryEntity(1, "Name", "sdasdasd")
+            ExpansesCategoryEntity(1, "Name", 1)
         ),
         IncomeData(
             IncomeEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            IncomeCategoryEntity(1, "Name", "sdasdasd")
+            IncomeCategoryEntity(1, "Name", 1)
         )
     )
     LazyColumn {

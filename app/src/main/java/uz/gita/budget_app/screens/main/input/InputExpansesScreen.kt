@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -16,16 +17,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
 import uz.gita.budget_app.R
 import uz.gita.budget_app.ui.theme.BackgroundColor
+import uz.gita.budget_app.ui.theme.BudgetAppTheme
 import uz.gita.budget_app.ui.theme.PrimaryColorDark
 import uz.gita.budget_app.ui.theme.SecondaryColor
+import uz.gita.budget_app.utils.AllCategoriesList
+import uz.gita.budget_app.utils.CategoryItems
 
 // Created by Jamshid Isoqov an 10/15/2022
 class InputExpansesScreen : AndroidScreen() {
     @Composable
     override fun Content() {
-
+        InputExpansesContent()
     }
 }
 
@@ -156,10 +161,23 @@ fun InputExpansesContent() {
             modifier = Modifier.padding(16.dp, 8.dp),
             color = SecondaryColor
         )
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
 
-
-
-
+            CategoryItems(AllCategoriesList.list) {}
+        }
+        CustomButtonView(
+            text = "Submit",
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxWidth()
+        ) {
+            //TODO click handle
+        }
     }
 
 
@@ -169,4 +187,17 @@ fun InputExpansesContent() {
 @Preview
 fun InputExpansesPreview() {
     InputExpansesContent()
+}
+
+@Composable
+fun CustomButtonView(
+    modifier: Modifier,
+    text: String,
+    onClick: () -> (Unit)
+) {
+    BudgetAppTheme() {
+            Button(onClick = onClick, modifier) {
+                Text(text = text)
+            }
+    }
 }

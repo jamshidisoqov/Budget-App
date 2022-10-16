@@ -9,5 +9,5 @@ data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
-    val image: String
+    val image: Int
 )

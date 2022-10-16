@@ -11,9 +11,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.hilt.getViewModel
+import com.google.accompanist.pager.ExperimentalPagerApi
 import org.orbitmvi.orbit.compose.collectAsState
 import uz.gita.budget_app.R
 import uz.gita.budget_app.screens.main.impl.MainViewModelImpl
+import uz.gita.budget_app.screens.main.input.InputScreenContent
 import uz.gita.budget_app.ui.theme.BackgroundColor
 
 // Created by Jamshid Isoqov an 10/15/2022
@@ -26,6 +28,7 @@ class MainScreen : AndroidScreen() {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Unit) {
     Column(
@@ -33,25 +36,28 @@ fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Uni
             .fillMaxSize()
             .background(BackgroundColor)
     ) {
-        val isSelected = when (uiState) {
-            MainUiState.Input -> {
-                1
-            }
-            MainUiState.Calculator -> {
-                2
-            }
-            MainUiState.Report -> {
-                3
-            }
-            MainUiState.Settings -> {
-                4
+        var isSelected = 0
+        Box(
+                modifier = Modifier
+                    .weight(1f)
+                .fillMaxWidth()
+        ) {
+            isSelected = when (uiState) {
+                MainUiState.Input -> {
+                    InputScreenContent()
+                    1
+                }
+                MainUiState.Calculator -> {
+                    2
+                }
+                MainUiState.Report -> {
+                    3
+                }
+                MainUiState.Settings -> {
+                    4
+                }
             }
         }
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {}
         Row(
             modifier = Modifier
                 .shadow(4.dp)
@@ -107,7 +113,7 @@ fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Uni
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun MainScreenPreview() {
     MainScreenContent(uiState = MainUiState.Input, eventDispatcher = {})

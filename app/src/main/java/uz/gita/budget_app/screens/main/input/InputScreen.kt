@@ -23,7 +23,7 @@ class InputScreen : AndroidScreen() {
     @OptIn(ExperimentalPagerApi::class)
     @Composable
     override fun Content() {
-        val pagerState = rememberPagerState(2)
+        InputScreenContent()
     }
 }
 
@@ -33,13 +33,17 @@ fun InputScreenContent() {
     val pagerState = rememberPagerState(2)
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .wrapContentSize()
             .background(Color.White)
     ) {
-        Box(modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
+        Box(modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()) {
             Tabs(pagerState = pagerState)
         }
-        Box(modifier =Modifier.fillMaxWidth().weight(1f)) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)) {
             Pager(pagerState = pagerState)
         }
     }
@@ -52,9 +56,10 @@ fun Pager(pagerState: PagerState) {
         HorizontalPager(state = pagerState) {
             when (this.currentPage) {
                 0 -> {
-
+                    InputExpansesScreen().Content()
                 }
                 1 -> {
+                    InputIncomeScreen().Content()
 
                 }
             }
@@ -65,19 +70,12 @@ fun Pager(pagerState: PagerState) {
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Tabs(pagerState: PagerState) {
-    val list = listOf("Active", "Completed")
+    val list = listOf("Expanses", "Income")
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         contentColor = BrandingColor,
-        modifier = Modifier.background(Color.Blue),
-        indicator = { _ ->
-            TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions = listOf()),
-                height = 2.dp,
-                color = BrandingColor
-            )
-        }
+        modifier = Modifier.background(Color.Blue)
     ) {
 
         list.forEachIndexed { index, _ ->

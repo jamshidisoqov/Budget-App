@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import uz.gita.budget_app.R
 import uz.gita.budget_app.screens.main.MainScreen
+import uz.gita.budget_app.screens.main.input.CustomButtonView
 import uz.gita.budget_app.utils.ButtonView
 
 
@@ -79,6 +80,7 @@ fun OnBoardingPager(
             .padding(bottom = 32.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        val navigator = LocalNavigator.currentOrThrow
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -87,7 +89,6 @@ fun OnBoardingPager(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            val navigator = LocalNavigator.currentOrThrow
 
             Text(text = "${pagerState.currentPage + 1}/${items.size}")
             if (pagerState.currentPage + 1 < items.size) {
@@ -146,13 +147,18 @@ fun OnBoardingPager(
             }
         }
         if (pagerState.currentPage + 1 < items.size) {
-            ButtonView(
+            CustomButtonView(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 text = "Continue",
                 onClick = { coroutineScope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) } },
             )
         } else ButtonView(
             text = "Get started ",
-            onClick = { coroutineScope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) } },
+            onClick = {
+                navigator.replace(MainScreen())
+            },
         )
     }
 }
