@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Budget App</string>
+    <string name="app_nameee">+</string>
+    <string name="next">Next</string>
+    <string name="reminder">Set Reminder</string>
 
     <string name="onBoardingTitle1">Easy to add new transaction</string>
     <string name="onBoardingTitle2">Track income and expenses</string>

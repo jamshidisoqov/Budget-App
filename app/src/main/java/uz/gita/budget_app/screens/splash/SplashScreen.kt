@@ -40,7 +40,7 @@ fun Splash() {
 }
 
 
-@Preview(showBackground = true)
+@Preview()
 @Composable
 fun SplashPreview() {
     BudgetAppTheme {
