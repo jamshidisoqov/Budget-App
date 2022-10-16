@@ -12,11 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uz.gita.budget_app.R
 import uz.gita.budget_app.ui.theme.BackgroundColorDark
-import uz.gita.budget_app.ui.theme.Red
+import uz.gita.budget_app.ui.theme.BrandingColor
 
 // Created by Jamshid Isoqov an 10/6/2022
 
@@ -40,14 +42,18 @@ fun BottomNavItem(
         Image(
             painter = painterResource(id = imageRes),
             contentDescription = name,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(30.dp),
             colorFilter = ColorFilter.tint(
-                if (isSelected) Red
+                if (isSelected) BrandingColor
                 else BackgroundColorDark
             )
         )
         if (isSelected) {
-            Text(text = name, color = Red)
+            Text(
+                text = name,
+                color = BrandingColor,
+                fontFamily = FontFamily(fonts = listOf(Font(R.font.poppins_medium)))
+            )
         }
     }
 }
