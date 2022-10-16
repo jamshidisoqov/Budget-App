@@ -103,4 +103,6 @@ dependencies {
 
     // Tab layout
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 }
