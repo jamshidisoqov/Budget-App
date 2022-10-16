@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.util.Log.d
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.*
@@ -39,7 +36,8 @@ import javax.inject.Inject
 
 @Composable
 fun CategoryItemView(
-    categoryModel: CategoryModel
+    categoryModel: CategoryModel,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -47,13 +45,16 @@ fun CategoryItemView(
             .width(92.dp)
             .height(92.dp)
             .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp))
-            .background(Color.White, shape = RoundedCornerShape(8.dp)),
+            .background(Color.White, shape = RoundedCornerShape(8.dp))
+            .clickable {
+                onClick.invoke()
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Image(
                 painter = painterResource(id = categoryModel.imageId),
@@ -68,58 +69,5 @@ fun CategoryItemView(
     }
 }
 
-@Preview
-@Composable
-fun CategoryItemPreview() {
-
-    BudgetAppTheme {
-        Surface {
-
-            val gridItems = listOf(
-                CategoryModel("Food", R.raw.food),
-                CategoryModel("Gas", R.raw.gas),
-                CategoryModel("Fun", R.raw.`fun`),
-            )
-            CategoryItems(categoryItems = AllCategoriesList.list)
-
-        }
-
-    }
-}
 
 
-@Composable
-fun RowItem(number: Int) {
-    // Simple Row Composable
-    Row(
-        modifier = Modifier
-            .size(100.dp) // Size 100 dp
-            .background(Color.White) // Background White
-            .border(width = 1.dp, color = Color.Unspecified), // Border color green
-
-        // Align Items in Center
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // Text Composable which displays some
-        // kind of message , text color is green
-        Text(text = "This Is Item Number $number", color = Color.Unspecified)
-    }
-}
-
-@Composable
-fun ColumnItem(number: Int) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(30.dp)
-            .background(Color.White)
-            .border(1.dp, Color.Unspecified),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-
-    ) {
-        Text(text = "This Is Item Number $number", color = Color.Unspecified)
-    }
-}

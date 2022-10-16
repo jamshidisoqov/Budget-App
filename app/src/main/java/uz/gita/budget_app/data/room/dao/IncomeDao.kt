@@ -5,7 +5,6 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import uz.gita.budget_app.data.room.entity.IncomeEntity
 
-
 // Created by Jamshid Isoqov an 10/14/2022
 @Dao
 interface IncomeDao : BaseDao<IncomeEntity> {
