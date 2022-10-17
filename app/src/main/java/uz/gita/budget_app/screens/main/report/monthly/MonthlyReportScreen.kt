@@ -1,10 +1,6 @@
 package uz.gita.budget_app.screens.main.report.monthly
 
-import android.annotation.SuppressLint
-import android.icu.text.ListFormatter.Width
-import android.media.Image
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,82 +10,79 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.hilt.getViewModel
+import org.orbitmvi.orbit.compose.collectAsState
 import uz.gita.budget_app.R
-import uz.gita.budget_app.data.models.CalendarData
+import uz.gita.budget_app.data.models.DayReportModel
 import uz.gita.budget_app.data.models.ExpansesData
 import uz.gita.budget_app.data.models.IncomeData
-import uz.gita.budget_app.data.room.entity.ExpansesCategoryEntity
-import uz.gita.budget_app.data.room.entity.ExpansesEntity
-import uz.gita.budget_app.data.room.entity.IncomeCategoryEntity
-import uz.gita.budget_app.data.room.entity.IncomeEntity
+import uz.gita.budget_app.screens.main.report.ReportBar
+import uz.gita.budget_app.screens.main.report.monthly.intent_uistate.M_R_Intents
+import uz.gita.budget_app.screens.main.report.monthly.intent_uistate.M_R_UiState
+import uz.gita.budget_app.screens.main.report.monthly.presenter.MonthlyReportViewModel
+import uz.gita.budget_app.screens.main.report.monthly.presenter.impl.MonthlyReportViewModelImpl
 import uz.gita.budget_app.ui.theme.BackgroundColor
+import uz.gita.budget_app.ui.theme.Blue
 import uz.gita.budget_app.ui.theme.BudgetAppTheme
 import uz.gita.budget_app.ui.theme.Red
-import uz.gita.budget_app.utils.AllCategoriesList
 import uz.gita.budget_app.utils.Fonts
-import java.io.Serializable
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 // Created by Jamshid Isoqov an 10/14/2022
 class MonthlyReportScreen : AndroidScreen() {
-    @Preview
+
+
     @Composable
     override fun Content() {
-        BudgetAppTheme {
-            Surface {
-                Column() {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.verticalScroll(state = ScrollState(1))) {
-                        ReportBar()
-                        DataSelectBar()
-                        CurrentBalanceView()
-                        ExpenseAndIncomeView()
-                        PreviousBalanceView()
+        val viewModel: MonthlyReportViewModel = getViewModel<MonthlyReportViewModelImpl>()
+        MonthlyReportScreenContent(viewModel = viewModel)
+    }
+}
 
-                    }
-                    Column {
-                        ReportTabsView()
-                        MonthlyReportView()
-                    }
+
+@Composable
+fun MonthlyReportScreenContent(
+    viewModel: MonthlyReportViewModel
+){
+    val uiState = viewModel.collectAsState().value
+    BudgetAppTheme {
+        Surface {
+            Column() {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.verticalScroll(state = ScrollState(1))
+                ) {
+
+                    DataSelectBar(uiState, viewModel::onEventDispatcher)
+                    CurrentBalanceView(uiState)
+                    ExpenseAndIncomeView(uiState)
+                    PreviousBalanceView(uiState)
+
                 }
-
-
+                Column {
+                    ReportTabsView(viewModel::onEventDispatcher)
+                    MonthlyReportView(uiState)
+                }
             }
+
+
         }
     }
 }
 
-
 @Composable
-fun ReportBar() {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = "Month Report")
-        Spacer(modifier = Modifier.weight(.7f))
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_expand_more_24),
-                contentDescription = "Expand Button"
-            )
-        }
-    }
-}
-
-
-@Composable
-fun DataSelectBar() {
+fun DataSelectBar(
+    uiState: M_R_UiState,
+    eventDispatcher: (M_R_Intents) -> Unit
+) {
     Row(
         modifier = Modifier
-
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .clip(RoundedCornerShape(50))
             .background(color = BackgroundColor)
@@ -99,7 +92,10 @@ fun DataSelectBar() {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = {
+                eventDispatcher(M_R_Intents.CalendarPrev)
+            },
+            modifier = Modifier
                 .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(50))
         ) {
             Image(
@@ -108,10 +104,14 @@ fun DataSelectBar() {
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "February, 2022")
+
+        Text(text = uiState.monthData)
+
         Spacer(modifier = Modifier.weight(1f))
+
         IconButton(
-            onClick = { /*TODO*/ }, modifier = Modifier
+            onClick = { eventDispatcher(M_R_Intents.CalendarNext) },
+            modifier = Modifier
                 .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(50))
         ) {
             Image(
@@ -124,7 +124,9 @@ fun DataSelectBar() {
 
 
 @Composable
-fun CurrentBalanceView() {
+fun CurrentBalanceView(
+    uiState: M_R_UiState
+) {
     Row(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -135,15 +137,27 @@ fun CurrentBalanceView() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Current Balance")
+        Text(
+            text = "Current Balance",
+            fontFamily = Fonts.poppinsFamily,
+            style = MaterialTheme.typography.bodyLarge,
+        )
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "$2133.23")
+
+        val numberFormat: NumberFormat =
+            NumberFormat.getCurrencyInstance().apply {
+                maximumFractionDigits = 0
+            }
+        val convert = numberFormat.format(uiState.currentBalance)
+        Text(text = convert)
     }
 }
 
 
 @Composable
-fun ExpenseAndIncomeView() {
+fun ExpenseAndIncomeView(
+    uiState: M_R_UiState
+) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -157,12 +171,24 @@ fun ExpenseAndIncomeView() {
         Row {
             Text(text = "Income")
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "$2133.23")
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(uiState.incomeCount)
+            Text(text = convert)
         }
         Row {
             Text(text = "Expense")
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "$2133.23")
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(uiState.expenseCount)
+            Text(text = convert)
         }
     }
 
@@ -170,7 +196,9 @@ fun ExpenseAndIncomeView() {
 
 
 @Composable
-fun PreviousBalanceView() {
+fun PreviousBalanceView(
+    uiState: M_R_UiState
+) {
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -182,14 +210,28 @@ fun PreviousBalanceView() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(uiState.incomeCount-uiState.expenseCount)
+
             Text(text = "Expense/Income")
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "$2133.23")
+            Text(text = convert)
         }
         Row {
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(uiState.previousBalance)
+
             Text(text = "Previous Balance")
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "$2133.23")
+            Text(text = convert)
         }
     }
 
@@ -198,10 +240,7 @@ fun PreviousBalanceView() {
 
 @Composable
 fun ReportTabsView(
-    text: String? = null,
-    icon: Image? = null,
-    selected: Boolean = false,
-    onSelected: () -> Unit = {}
+    eventDispatcher: (M_R_Intents) -> Unit
 ) {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("All", "Expense", "Income")
@@ -226,6 +265,7 @@ fun ReportTabsView(
                     selected = state == index,
                     onClick = {
                         state = index
+                        eventDispatcher(M_R_Intents.ReportTabSelected(index))
                     },
                     selectedContentColor = Color.Black,
                     unselectedContentColor = Color.Gray
@@ -238,42 +278,26 @@ fun ReportTabsView(
 
 @Composable
 fun MonthlyReportView(
-    //list: List<Serializable>
+    uiState: M_R_UiState
 ) {
-    val list = listOf<Serializable>(
-        CalendarData(4214123123, false, false),
-        ExpansesData(
-            ExpansesEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            ExpansesCategoryEntity(1, "Name", 1)
-            ),
-        IncomeData(
-            IncomeEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            IncomeCategoryEntity(1, "Name", 1)
-        ),
-        CalendarData(4214123123, false, false),
-        ExpansesData(
-            ExpansesEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            ExpansesCategoryEntity(1, "Name", 1)
-        ),
-        IncomeData(
-            IncomeEntity(1, 2, 3, 323.0, 321.0, "For Holiday", 312312),
-            IncomeCategoryEntity(1, "Name", 1)
-        )
-    )
+
     LazyColumn {
         items(
-            count = list.size,
+            count = uiState.monthlyReportList.size,
             key = null,
             itemContent = { index ->
-                when (list[index]) {
-                    is CalendarData -> {
-                        DayReportView()
+
+                val report = uiState.monthlyReportList[index]
+
+                when (report) {
+                    is DayReportModel -> {
+                        DayReportView(report )
                     }
                     is ExpansesData -> {
-                        DayReportItemsView()
+                        DayReportItemsView(expansesData = report)
                     }
                     is IncomeData -> {
-                        DayReportItemsView()
+                        DayReportItemsView(incomeData = report)
                     }
                 }
             }
@@ -282,10 +306,16 @@ fun MonthlyReportView(
 }
 
 
+
 @Composable
 fun DayReportView(
-    //calendarData: CalendarData
+    dayReportModel: DayReportModel
 ) {
+
+    val dateS = Date(dayReportModel.data)
+    val date = SimpleDateFormat.getDateInstance().format("MMM dd, yyyy").format(dateS)
+
+
     Column(
         modifier = Modifier
             .padding(vertical = 12.dp)
@@ -294,14 +324,26 @@ fun DayReportView(
             .padding(horizontal = 8.dp, vertical = 2.dp)
     ) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Feb 24, 2022")
+            Text(text = date)
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "-$4,232.34")
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(dayReportModel.expenseCount)
+            Text(text = convert)
         }
         Spacer(modifier = Modifier.weight(.1f))
         Row(horizontalArrangement = Arrangement.Center) {
             Spacer(modifier = Modifier.weight(1f))
-            Text(text = "+$34,423.34")
+
+            val numberFormat: NumberFormat =
+                NumberFormat.getCurrencyInstance().apply {
+                    maximumFractionDigits = 0
+                }
+            val convert = numberFormat.format(dayReportModel.incomeCount)
+            Text(text = convert)
         }
     }
 }
@@ -309,9 +351,38 @@ fun DayReportView(
 
 @Composable
 fun DayReportItemsView(
-
+    expansesData: ExpansesData? = null,
+    incomeData: IncomeData? = null
 ) {
-    val category = AllCategoriesList.list.random()
+    var imageId : Int = R.raw.money
+    val name: String
+    val amount: String
+
+    if (expansesData != null) {
+        imageId = expansesData.category.image
+
+        name = expansesData.category.name
+
+        val value = expansesData.expansesEntity.currencyValue
+        val numberFormat: NumberFormat =
+            NumberFormat.getCurrencyInstance().apply {
+                maximumFractionDigits = 0
+            }
+        amount = "-" + numberFormat.format(value)
+    }
+    else if (incomeData != null){
+        imageId = incomeData.category.image
+        name = incomeData.category.name
+        val value = incomeData.incomeEntity.currencyValue
+        val numberFormat: NumberFormat =
+            NumberFormat.getCurrencyInstance().apply {
+                maximumFractionDigits = 0
+            }
+        amount = "+" + numberFormat.format(value)
+    }
+    else
+        return
+
     Row(
         modifier = Modifier
             .padding(horizontal = 8.dp)
@@ -320,16 +391,16 @@ fun DayReportItemsView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = category.imageId),
+            painter = painterResource(id = imageId),
             contentDescription = "Image",
             modifier = Modifier
                 .padding(6.dp)
                 .height(50.dp)
                 .width(50.dp)
         )
-        Text(text = category.name)
+        Text(text = name)
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "-$32.4", color = Red)
+        Text(text = amount, color = if (amount.startsWith('-')) Red else Blue)
     }
 }
 
