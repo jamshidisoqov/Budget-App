@@ -1,6 +1,5 @@
 package uz.gita.budget_app.directions.impl
 
-import androidx.lifecycle.ViewModel
 import uz.gita.budget_app.directions.IntroScreenDirections
 import uz.gita.budget_app.navigation.AppNavigation
 import uz.gita.budget_app.screens.main.MainScreen
@@ -10,6 +9,6 @@ class IntroScreenDirectionsImpl @Inject constructor(
     private val appNavigation: AppNavigation
 ) : IntroScreenDirections {
     override suspend fun navigateToMainScreen() {
-        appNavigation.splashNavigateTo(MainScreen())
+        appNavigation.navigateTo(MainScreen())
     }
 }
