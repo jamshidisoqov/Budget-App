@@ -9,5 +9,5 @@ data class IncomeCategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val image: String
+    val image: Int
 )
