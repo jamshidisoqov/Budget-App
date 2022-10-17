@@ -20,12 +20,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import uz.gita.budget_app.ui.theme.BackgroundColor
 
 // Created by Jamshid Isoqov an 10/14/2022
 class SettingsScreen : AndroidScreen() {
     @Composable
     override fun Content() {
-
+        SettingsScreens()
     }
 }
 
@@ -34,9 +35,9 @@ class SettingsScreen : AndroidScreen() {
 @Composable
 fun SettingsScreens(){
     Column(
-        modifier = Modifier.fillMaxSize().background(color = Color.Black),
-
-
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = BackgroundColor),
         ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

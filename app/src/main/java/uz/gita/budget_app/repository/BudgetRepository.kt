@@ -1,6 +1,7 @@
 package uz.gita.budget_app.repository
 
 import kotlinx.coroutines.flow.Flow
+import uz.gita.budget_app.data.models.CBUData
 import uz.gita.budget_app.data.room.entity.*
 
 // Created by Jamshid Isoqov an 10/14/2022
@@ -57,7 +58,7 @@ interface BudgetRepository {
 
 
     //expanses
-    suspend fun insertExpansesEntity(expansesEntity: ExpansesEntity):Long
+    suspend fun insertExpansesEntity(expansesEntity: ExpansesEntity): Long
 
     suspend fun updateExpansesEntity(expansesEntity: ExpansesEntity)
 
@@ -76,7 +77,7 @@ interface BudgetRepository {
     suspend fun getExpansesSumByCategoryDate(categoryId: Int, start: Long, end: Long): Double
 
     //income
-    suspend fun insertIncomeEntity(entity: IncomeEntity):Long
+    suspend fun insertIncomeEntity(entity: IncomeEntity): Long
 
     suspend fun updateIncomeEntity(entity: IncomeEntity)
 
@@ -119,9 +120,11 @@ interface BudgetRepository {
 
     suspend fun setReminder(reminder: String)
 
-    suspend fun getAllCategories():List<CategoryEntity>
+    suspend fun getAllCategories(): List<CategoryEntity>
 
     suspend fun getIsDarkMode(): Boolean
 
     suspend fun setIsDarkMode()
+
+    suspend fun refreshCurrencies(): List<CBUData>
 }

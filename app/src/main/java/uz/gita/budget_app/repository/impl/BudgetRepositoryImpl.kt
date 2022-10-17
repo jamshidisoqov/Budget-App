@@ -1,6 +1,8 @@
 package uz.gita.budget_app.repository.impl
 
 import kotlinx.coroutines.flow.Flow
+import uz.gita.budget_app.data.api.CBUApi
+import uz.gita.budget_app.data.models.CBUData
 import uz.gita.budget_app.data.prefs.MySharedPref
 import uz.gita.budget_app.data.room.dao.*
 import uz.gita.budget_app.data.room.entity.*
@@ -16,7 +18,8 @@ class BudgetRepositoryImpl @Inject constructor(
     private val imagesDao: ImagesDao,
     private val incomeCategoryDao: IncomeCategoryDao,
     private val incomeDao: IncomeDao,
-    private val mySharedPref: MySharedPref
+    private val mySharedPref: MySharedPref,
+    private val api:CBUApi
 ) : BudgetRepository {
 
     override suspend fun insertCalendarData(calendarEntity: CalendarEntity) {
@@ -206,4 +209,6 @@ class BudgetRepositoryImpl @Inject constructor(
     override suspend fun setIsDarkMode() {
         mySharedPref.appIsDarkMode = !mySharedPref.appIsDarkMode
     }
+
+    override suspend fun refreshCurrencies(): List<CBUData> = api.getCurrency().body()!!
 }

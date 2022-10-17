@@ -11,7 +11,9 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = IncomeCategoryEntity::class,
             parentColumns = ["id"],
-            childColumns = ["incomeCategoryId"]
+            childColumns = ["incomeCategoryId"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

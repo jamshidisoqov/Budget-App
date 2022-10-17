@@ -37,7 +37,7 @@ import javax.inject.Inject
 @Composable
 fun CategoryItemView(
     categoryModel: CategoryModel,
-    onClick: () -> Unit
+    onClick: (CategoryModel) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -47,7 +47,7 @@ fun CategoryItemView(
             .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp))
             .background(Color.White, shape = RoundedCornerShape(8.dp))
             .clickable {
-                onClick.invoke()
+                onClick.invoke(categoryModel)
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

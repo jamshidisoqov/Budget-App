@@ -16,7 +16,7 @@ import uz.gita.budget_app.data.room.entity.*
         ImagesEntity::class,
         IncomeEntity::class,
         IncomeCategoryEntity::class,
-    ], version = 1
+    ], version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
 

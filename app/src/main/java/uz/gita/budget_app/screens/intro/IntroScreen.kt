@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 import uz.gita.budget_app.R
 import uz.gita.budget_app.screens.main.MainScreen
 import uz.gita.budget_app.screens.main.input.CustomButtonView
-import uz.gita.budget_app.utils.ButtonView
 
 
 class IntroScreen : AndroidScreen() {
@@ -46,7 +45,6 @@ class IntroScreen : AndroidScreen() {
 fun TabLayout() {
     val coroutineScope = rememberCoroutineScope()
     val systemUiController: SystemUiController = rememberSystemUiController()
-    systemUiController.isSystemBarsVisible = false//removes system bar
     val items: ArrayList<IntroData> = arrayListOf(
         IntroData(R.drawable.illustration1, R.string.onBoardingTitle1, R.string.onBoardingDesc1),
         IntroData(R.drawable.illustration2, R.string.onBoardingTitle2, R.string.onBoardingDesc2),
@@ -154,7 +152,10 @@ fun OnBoardingPager(
                 text = "Continue",
                 onClick = { coroutineScope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) } },
             )
-        } else ButtonView(
+        } else CustomButtonView(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
             text = "Get started ",
             onClick = {
                 navigator.replace(MainScreen())

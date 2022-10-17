@@ -19,7 +19,6 @@ class MainViewModelImpl @Inject constructor() : MainViewModel, ViewModel() {
 
     override fun onEventDispatcher(intent: MainIntent) = intent {
         reduce {
-            Log.d("YYY", "onEventDispatcher: $intent")
             when (intent) {
                 MainIntent.InputClicked -> MainUiState.Input
                 MainIntent.CalculatorClicked -> MainUiState.Calculator

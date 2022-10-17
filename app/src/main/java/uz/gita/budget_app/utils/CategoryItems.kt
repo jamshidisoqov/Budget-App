@@ -18,7 +18,7 @@ import uz.gita.budget_app.ui.theme.BudgetAppTheme
 @Composable
 fun CategoryItems(
     categoryItems: List<CategoryModel>,
-    onClick: () -> Unit
+    onClick: (CategoryModel) -> Unit
 ){
     val cols = 4
     LazyVerticalGrid(horizontalArrangement = Arrangement.Center, columns = GridCells.Fixed(cols)) {

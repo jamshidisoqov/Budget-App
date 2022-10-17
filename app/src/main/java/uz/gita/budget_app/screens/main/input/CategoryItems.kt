@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import uz.gita.budget_app.data.room.entity.CategoryEntity
+import uz.gita.budget_app.ui.theme.BrandingColor
 import uz.gita.budget_app.ui.theme.BudgetAppTheme
 import uz.gita.budget_app.utils.AllCategoriesList
 import uz.gita.budget_app.utils.Fonts
@@ -24,13 +25,17 @@ import uz.gita.budget_app.utils.Fonts
 @Composable
 fun CategoryItems(
     categoryItems: List<CategoryEntity>,
-    onClick: () -> Unit
+    onClick: (CategoryEntity) -> Unit,
+    endClick: (Long) -> Unit,
+    lastSelection:Long
 ) {
     val cols = 4
     LazyVerticalGrid(horizontalArrangement = Arrangement.Center, columns = GridCells.Fixed(cols)) {
-
         items(categoryItems) {
-            CategoryItemView(it, onClick)
+            CategoryItemView(it, lastSelection==it.id,onClick)
+        }
+        item {
+            CategoryItemEnd(onClick = endClick)
         }
     }
 }
@@ -41,13 +46,14 @@ fun CategoryItemPreview() {
 
     BudgetAppTheme {
         Surface {
-            CategoryItems(categoryItems = listOf(
-                CategoryEntity(1, "Home", 1),
-                CategoryEntity(1, "Input", 2),
-                CategoryEntity(1, "Home", 3),
-                CategoryEntity(1, "Home", 4),
-            )
-            ) {}
+            CategoryItems(
+                categoryItems = listOf(
+                    CategoryEntity(1, "Home", 1),
+                    CategoryEntity(1, "Input", 2),
+                    CategoryEntity(1, "Home", 3),
+                    CategoryEntity(1, "Home", 4),
+                ),{},{}
+            ,1)
         }
 
     }
@@ -57,17 +63,18 @@ fun CategoryItemPreview() {
 @Composable
 fun CategoryItemView(
     category: CategoryEntity,
-    onClick: () -> Unit
+    isSelected:Boolean = false,
+    onClick: (CategoryEntity) -> Unit
 ) {
     Column(
         modifier = Modifier
             .padding(2.dp)
             .width(92.dp)
             .height(92.dp)
-            .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp))
+            .border(BorderStroke(1.dp,if (isSelected) BrandingColor else Color.Gray), RoundedCornerShape(8.dp))
             .background(Color.White, shape = RoundedCornerShape(8.dp))
             .clickable {
-                onClick.invoke()
+                onClick.invoke(category)
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -85,6 +92,37 @@ fun CategoryItemView(
             )
             Text(
                 text = category.name,
+                fontFamily = Fonts.poppinsFamily,
+                fontWeight = FontWeight.Normal
+            )
+        }
+
+    }
+}
+
+@Composable
+fun CategoryItemEnd(
+    onClick: (Long) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(2.dp)
+            .width(92.dp)
+            .height(92.dp)
+            .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp))
+            .background(Color.White, shape = RoundedCornerShape(8.dp))
+            .clickable {
+                onClick.invoke(-1L)
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = "Edit",
                 fontFamily = Fonts.poppinsFamily,
                 fontWeight = FontWeight.Normal
             )

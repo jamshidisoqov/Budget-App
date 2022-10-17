@@ -10,5 +10,5 @@ data class CurrenciesEntity(
     val id: Int,
     val dollarPrice: Double,
     val name: String,
-    val image: String
+    val image: Int
 )

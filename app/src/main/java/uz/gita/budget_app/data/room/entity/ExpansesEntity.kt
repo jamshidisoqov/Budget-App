@@ -5,13 +5,17 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 // Created by Jamshid Isoqov an 10/13/2022
-@Entity(tableName = "expanses", foreignKeys = [
-    ForeignKey(
-        entity = ExpansesCategoryEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["expansesCategoryId"]
-    )
-])
+@Entity(
+    tableName = "expanses", foreignKeys = [
+        ForeignKey(
+            entity = ExpansesCategoryEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["expansesCategoryId"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class ExpansesEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
@@ -20,5 +24,5 @@ data class ExpansesEntity(
     val currencyValue: Double,
     val dollarValue: Double,
     val comment: String,
-    val date:Long
+    val date: Long
 )

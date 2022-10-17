@@ -14,8 +14,11 @@ import cafe.adriel.voyager.hilt.getViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import org.orbitmvi.orbit.compose.collectAsState
 import uz.gita.budget_app.R
+import uz.gita.budget_app.screens.main.calculator.CalculatorScreen
 import uz.gita.budget_app.screens.main.impl.MainViewModelImpl
 import uz.gita.budget_app.screens.main.input.InputScreenContent
+import uz.gita.budget_app.screens.main.report.monthly.MonthlyReportScreen
+import uz.gita.budget_app.screens.main.settings.SettingsScreen
 import uz.gita.budget_app.ui.theme.BackgroundColor
 
 // Created by Jamshid Isoqov an 10/15/2022
@@ -38,8 +41,8 @@ fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Uni
     ) {
         var isSelected = 0
         Box(
-                modifier = Modifier
-                    .weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
         ) {
             isSelected = when (uiState) {
@@ -48,12 +51,15 @@ fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Uni
                     1
                 }
                 MainUiState.Calculator -> {
+                    CalculatorScreen().Content()
                     2
                 }
                 MainUiState.Report -> {
+                    MonthlyReportScreen().Content()
                     3
                 }
                 MainUiState.Settings -> {
+                    SettingsScreen().Content()
                     4
                 }
             }
