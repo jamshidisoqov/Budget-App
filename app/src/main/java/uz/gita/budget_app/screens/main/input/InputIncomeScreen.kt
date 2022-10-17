@@ -23,7 +23,6 @@ import cafe.adriel.voyager.hilt.getViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import uz.gita.budget_app.R
 import uz.gita.budget_app.data.room.entity.CategoryEntity
-import uz.gita.budget_app.presenter.InputExpansesIntent
 import uz.gita.budget_app.screens.main.input.impl.InputIncomeViewModelImpl
 import uz.gita.budget_app.ui.theme.BackgroundColor
 import uz.gita.budget_app.ui.theme.PrimaryColorDark

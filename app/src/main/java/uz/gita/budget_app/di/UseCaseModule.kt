@@ -36,5 +36,8 @@ interface UseCaseModule {
     @Binds
     fun bindSplashUseCase(impl: SplashUseCaseImpl): SplashUseCase
 
+    @Binds
+    fun bindBalanceUseCase(impl: BalanceUseCaseImpl): BalanceUseCase
+
 
 }

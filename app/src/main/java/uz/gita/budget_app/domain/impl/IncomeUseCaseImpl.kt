@@ -1,10 +1,7 @@
 package uz.gita.budget_app.domain.impl
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import uz.gita.budget_app.data.models.IncomeData
 import uz.gita.budget_app.data.room.entity.CalendarEntity
 import uz.gita.budget_app.domain.IncomeUseCase
@@ -31,7 +28,7 @@ class IncomeUseCaseImpl @Inject constructor(
         repository.deleteIncomeEntity(entity.incomeEntity)
     }
 
-    override fun getAllIncomeByDate(start: Long, end: Long): Flow<List<IncomeData>> = flow {
+    override fun getAllIncomeByDate(start: Long, end: Long): Flow<List<IncomeData>> = channelFlow {
         repository.getAllIncomeByDate(start, end).collectLatest {
             val incomeList = ArrayList<IncomeData>()
             for (i in it) {
@@ -40,7 +37,7 @@ class IncomeUseCaseImpl @Inject constructor(
                 val incomeData = IncomeData(i, incomeCategory, images)
                 incomeList.add(incomeData)
             }
-            emit(incomeList)
+            send(incomeList)
         }
     }.flowOn(Dispatchers.IO)
 

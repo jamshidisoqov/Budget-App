@@ -32,7 +32,7 @@ class ReportScreen : AndroidScreen(){
 fun ReportScreenContent(
     viewModel: ReportScreenViewModel,
 ){
-    val viewModel = ReportScreenViewModelImpl()
+
     val uiState = viewModel.collectAsState().value
 
     BudgetAppTheme {

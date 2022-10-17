@@ -51,11 +51,11 @@ fun String.toTime(): List<String> {
 }
 
 @SuppressLint("SimpleDateFormat")
-fun returnDateAndThen(): Pair<String?, String?> {
+fun returnDateAndThen(): Pair<Long, Long> {
     val simpleDateFormat = SimpleDateFormat("MMMM dd,yyyy")
     val date = Date()
     return Pair(
-        simpleDateFormat.format(date),
-        simpleDateFormat.format(Date(date.year, date.month + 1, date.day))
+        simpleDateFormat.format(date).toDate().time,
+        simpleDateFormat.format(Date(date.year, date.month + 1, date.day)).toDate().time
     )
 }

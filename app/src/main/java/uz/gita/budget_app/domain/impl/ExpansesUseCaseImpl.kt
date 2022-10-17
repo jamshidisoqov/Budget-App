@@ -1,10 +1,7 @@
 package uz.gita.budget_app.domain.impl
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import uz.gita.budget_app.data.models.ExpansesData
 import uz.gita.budget_app.data.room.entity.CalendarEntity
 import uz.gita.budget_app.domain.ExpansesUseCase
@@ -36,7 +33,7 @@ class ExpansesUseCaseImpl @Inject constructor(
         }
     }
 
-    override fun getAllExpansesByDate(start: Long, end: Long): Flow<List<ExpansesData>> = flow {
+    override fun getAllExpansesByDate(start: Long, end: Long): Flow<List<ExpansesData>> = channelFlow {
         repository.getAllExpansesByDate(start, end).collectLatest {
             val expansesList = ArrayList<ExpansesData>()
             for (i in it) {
@@ -45,7 +42,7 @@ class ExpansesUseCaseImpl @Inject constructor(
                 val expansesData = ExpansesData(i, expansesCategory, images)
                 expansesList.add(expansesData)
             }
-            emit(expansesList)
+            send(expansesList)
         }
     }.flowOn(Dispatchers.IO)
 

@@ -1,4 +1,4 @@
-package uz.gita.budget_app.presenter
+package uz.gita.budget_app.screens.main.input
 
 import uz.gita.budget_app.data.room.entity.ExpansesCategoryEntity
 import uz.gita.budget_app.utils.AppViewModel

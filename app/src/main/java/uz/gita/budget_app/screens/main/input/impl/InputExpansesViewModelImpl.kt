@@ -1,4 +1,4 @@
-package uz.gita.budget_app.presenter.impl
+package uz.gita.budget_app.screens.main.input.impl
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +16,9 @@ import uz.gita.budget_app.domain.CategoryUseCase
 import uz.gita.budget_app.domain.CurrenciesUseCase
 import uz.gita.budget_app.domain.ExpansesUseCase
 import uz.gita.budget_app.navigation.AppNavigation
-import uz.gita.budget_app.presenter.InputExpansesIntent
-import uz.gita.budget_app.presenter.InputExpansesUiState
-import uz.gita.budget_app.presenter.InputExpansesViewModel
+import uz.gita.budget_app.screens.main.input.InputExpansesIntent
+import uz.gita.budget_app.screens.main.input.InputExpansesUiState
+import uz.gita.budget_app.screens.main.input.InputExpansesViewModel
 import uz.gita.budget_app.screens.categories.add_category.AddCategoriesScreen
 import javax.inject.Inject
 

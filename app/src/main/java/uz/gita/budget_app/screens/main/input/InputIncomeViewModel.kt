@@ -1,7 +1,6 @@
 package uz.gita.budget_app.screens.main.input
 
 import uz.gita.budget_app.data.room.entity.IncomeCategoryEntity
-import uz.gita.budget_app.presenter.InputExpansesIntent
 import uz.gita.budget_app.utils.AppViewModel
 import uz.gita.budget_app.utils.getCurrentDate
 import uz.gita.budget_app.utils.toDate

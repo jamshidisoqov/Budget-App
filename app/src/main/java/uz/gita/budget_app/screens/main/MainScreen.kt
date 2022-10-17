@@ -17,6 +17,7 @@ import uz.gita.budget_app.R
 import uz.gita.budget_app.screens.main.calculator.CalculatorScreen
 import uz.gita.budget_app.screens.main.impl.MainViewModelImpl
 import uz.gita.budget_app.screens.main.input.InputScreenContent
+import uz.gita.budget_app.screens.main.report.ReportScreen
 import uz.gita.budget_app.screens.main.report.monthly.MonthlyReportScreen
 import uz.gita.budget_app.screens.main.settings.SettingsScreen
 import uz.gita.budget_app.ui.theme.BackgroundColor
@@ -55,7 +56,7 @@ fun MainScreenContent(uiState: MainUiState, eventDispatcher: (MainIntent) -> Uni
                     2
                 }
                 MainUiState.Report -> {
-                    MonthlyReportScreen().Content()
+                    ReportScreen().Content()
                     3
                 }
                 MainUiState.Settings -> {
